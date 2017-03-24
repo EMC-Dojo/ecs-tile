@@ -1,0 +1,48 @@
+---
+# The high-level description of your tile.
+# Replace these properties with real values.
+#
+name: ecs-tile # By convention lowercase with dashes
+icon_file: resources/icon.png
+label: Elastic Cloud Storage
+description: Dell - EMC Software Defined Storage
+# metadata_version: 1.8                 # Optional, defaults to 1.5
+
+# Global defaults (all optional)
+#
+# org: test-org                         # Name of org to create for your apps
+# space: test-space                     # Name of space to create for your apps
+apply_open_security_group: true         # Apply open security group, default: false
+
+# Specify the packages to be included in your tile.
+# The format of the section to include depends on the type
+# of package you are describing. For fragments of each type
+# that you can copy & paste, see:
+#
+# https://github.com/cf-platform-eng/tile-generator/blob/master/README.md
+#
+packages:
+- name: ecs
+  type: bosh-release
+  label: EMC ECS 3 Node Cluster     # Package name for use in human-readable labels in OpsManager
+  path: resources/ecs.0.tgz
+  jobs:
+  - name: ecs_prov_errand
+    instances: 1
+    static_ip: 1
+    lifecycle: errand
+    post_deploy: true
+    templates:
+    - name: pcf
+      release: ecs-release
+    properties:
+      pcf:
+        dir_ip: (( $director.deployment_ip ))
+        dir_user: (( $director.username ))
+        dir_password: (( $director.password ))
+        ca_cert: (( $ops_manager.ca_certificate ))
+    stemcell: default
+    networks:
+    - name: default
+    cpu: 2
+    memory: 2048
