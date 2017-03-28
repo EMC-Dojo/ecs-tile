@@ -25,7 +25,7 @@ packages:
 - name: ecs
   type: bosh-release
   label: EMC ECS 3 Node Cluster     # Package name for use in human-readable labels in OpsManager
-  path: resources/ecs.0.tgz
+  path: resources/ecs.tgz
   jobs:
   - name: pcf_ecs_deploy
     instances: 1
