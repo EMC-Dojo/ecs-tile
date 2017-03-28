@@ -27,13 +27,32 @@ packages:
   label: EMC ECS 3 Node Cluster     # Package name for use in human-readable labels in OpsManager
   path: resources/ecs.0.tgz
   jobs:
-  - name: ecs_prov_errand
+  - name: pcf_ecs_deploy
     instances: 1
     static_ip: 1
     lifecycle: errand
     post_deploy: true
     templates:
     - name: pcf
+      release: ecs-release
+    properties:
+      pcf:
+        dir_ip: (( $director.deployment_ip ))
+        dir_user: (( $director.username ))
+        dir_password: (( $director.password ))
+        ca_cert: (( $ops_manager.ca_certificate ))
+    stemcell: default
+    networks:
+    - name: default
+    cpu: 2
+    memory: 2048
+  - name: pcf_ecs_prov
+    instances: 1
+    static_ip: 1
+    lifecycle: errand
+    post_deploy: true
+    templates:
+    - name: pcf_provision
       release: ecs-release
     properties:
       pcf:
