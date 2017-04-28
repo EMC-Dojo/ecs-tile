@@ -41,6 +41,13 @@ packages:
         dir_user: (( $director.username ))
         dir_password: (( $director.password ))
         ca_cert: (( $ops_manager.ca_certificate ))
+      configurable_properties:
+        vm_type: (( .properties.vm_type.value ))
+        network: (( .properties.network.value ))
+        server_azs: (( .properties.server_azs.value ))
+        provision_az: (( .properties.provision_az.value ))
+        docker_disk: (( .properties.docker_disk.value ))
+        ecs_disk: (( .properties.ecs_disk.value ))
     stemcell: default
     networks:
     - name: default
@@ -65,3 +72,32 @@ packages:
     - name: default
     cpu: 2
     memory: 2048
+forms:
+- name: configurable_properties
+  label: Configurable Properties
+  description: All the properties that you can configure!
+  properties:
+  - name: vm_type
+    type: string
+    label: vm type
+    description: The VM type defined by your Cloud Configuration
+  - name: network
+    type: string
+    label: Network Name
+    description: The network to deploy ECS on
+  - name: server_azs
+    type: string
+    label: Server AZs
+    description: The AZ's to deploy the servers on
+  - name: provision_az
+    type: string
+    label: Provision AZ
+    description: The AZ of the server to provision ECS on
+  - name: docker_disk
+    type: string
+    label: Docker disk
+    description: The disk type of the docker image deploying ECS
+  - name: ecs_disk
+    type: string
+    label: ECS disk
+    description: The disk type on which ECS is deployed
